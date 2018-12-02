@@ -1,4 +1,4 @@
-function [der,errest,finaldelta] = derivest_edit(fun,x0,varargin)
+function [der,errest,finaldelta] = derivest(fun,x0,varargin)
 % DERIVEST: estimate the n'th derivative of fun at x0, provide an error estimate
 % usage: [der,errest] = DERIVEST(fun,x0)  % first derivative
 % usage: [der,errest] = DERIVEST(fun,x0,prop1,val1,prop2,val2,...)

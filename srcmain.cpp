@@ -1,10 +1,8 @@
 #include <assert.h>
-
-#include <cmath>
-#include <cstdlib>
+#include <math.h>
+#include <stdlib.h>
 
 #include <iostream>
-#include <algorithm>
 
 enum DerivestStyle {
   DerivestStyle_Central = 0,
@@ -12,7 +10,6 @@ enum DerivestStyle {
   DerivestStyle_Backward = 2,
 };
 
-// The following code is auto-generated with make_c_code() from derivutils.m
 double* get_fdarule(int derivative_order, int method_order, DerivestStyle style, int *n) {
   if (style == DerivestStyle_Central && method_order == 2 && derivative_order == 1) { static double data[] = { 1.00000000000000000000, }; *n = 1; return data; }
   if (style == DerivestStyle_Central && method_order == 2 && derivative_order == 2) { static double data[] = { 2.00000000000000000000, }; *n = 1; return data; }
@@ -54,7 +51,7 @@ double* get_fdarule(int derivative_order, int method_order, DerivestStyle style,
   if (style == DerivestStyle_Backward && method_order == 4 && derivative_order == 2) { static double data[] = { 0.19047610385484859000, -11.04761640453383700000, 191.99999039998590000000, -1121.52392852603750000000, 1560.38125702673600000000, }; *n = 5; return data; }
   if (style == DerivestStyle_Backward && method_order == 4 && derivative_order == 3) { static double data[] = { 0.76190439003349786000, -89.90474156592972600000, 3248.76192546417310000000, -42032.77030951646200000000, 171641.96048256109000000000, -199728.84417419793000000000, }; *n = 6; return data; }
   if (style == DerivestStyle_Backward && method_order == 4 && derivative_order == 4) { static double data[] = { 3.48299142217729240000, -828.95221520044026000000, 61049.90956226736300000000, -1656010.53460411840000000000, 15628783.09987751400000000000, -54326255.84047879300000000000, 58434969.54424954200000000000, }; *n = 7; return data; }
-  throw std::invalid_argument("unsupported parameters");
+  return NULL;
 }
 double* get_qromb(DerivestStyle style, int method_order, int romberg_terms, double* err, int *rows, int *cols) {
   if (style == DerivestStyle_Central && method_order == 2 && romberg_terms == 0) { static double data[] = { -0.70710678118654724000, -0.70710678118654746000, }; *rows = 2; *cols = 1; *err = 8.98464353209375590000; return data; }
@@ -97,7 +94,7 @@ double* get_qromb(DerivestStyle style, int method_order, int romberg_terms, doub
   if (style == DerivestStyle_Backward && method_order == 4 && romberg_terms == 1) { static double data[] = { -0.57735026918962573000, 0.81537424876164311000, -0.57735026918962573000, -0.37062466571589092000, -0.57735026918962573000, -0.44474958304575207000, }; *rows = 3; *cols = 2; *err = 9.29861164842509960000; return data; }
   if (style == DerivestStyle_Backward && method_order == 4 && romberg_terms == 2) { static double data[] = { -0.50000000000000000000, 0.86455518812718046000, -0.05042417095990074600, -0.50000000000000000000, -0.24069390070918101000, 0.82940552064749506000, -0.50000000000000000000, -0.30977195494584181000, -0.33409250825901193000, -0.50000000000000000000, -0.31408933247215770000, -0.44488884142858237000, }; *rows = 4; *cols = 3; *err = 9.46226527575433710000; return data; }
   if (style == DerivestStyle_Backward && method_order == 4 && romberg_terms == 3) { static double data[] = { -0.44721359549995787000, 0.89280678475220199000, -0.05379210347288370500, 0.00156661714150256720, -0.44721359549995787000, -0.17118408690398346000, 0.87460307861702569000, -0.07589573421572049000, -0.44721359549995787000, -0.23768350308261099000, -0.20256093577085887000, 0.83474832807189647000, -0.44721359549995787000, -0.24183971576253271000, -0.30535831126387952000, -0.31573509971323455000, -0.44721359549995787000, -0.24209947900307516000, -0.31289172810940358000, -0.44468411128444402000, }; *rows = 5; *cols = 4; *err = 9.54585552301028170000; return data; }
-  throw std::invalid_argument("unsupported parameters");
+  return NULL;
 }
 double* get_rmat(DerivestStyle style, int method_order, int romberg_terms, double* err, int *rows, int *cols) {
   if (style == DerivestStyle_Central && method_order == 2 && romberg_terms == 0) { static double data[] = { 1.00000000000000000000, 1.00000000000000000000, }; *rows = 2; *cols = 1; *err = 8.98464353209375590000; return data; }
@@ -140,7 +137,7 @@ double* get_rmat(DerivestStyle style, int method_order, int romberg_terms, doubl
   if (style == DerivestStyle_Backward && method_order == 4 && romberg_terms == 1) { static double data[] = { 1.00000000000000000000, 1.00000000000000000000, 1.00000000000000000000, 0.06249998750000159600, 1.00000000000000000000, 0.00390624843750035600, }; *rows = 3; *cols = 2; *err = 9.29861164842509960000; return data; }
   if (style == DerivestStyle_Backward && method_order == 4 && romberg_terms == 2) { static double data[] = { 1.00000000000000000000, 1.00000000000000000000, 1.00000000000000000000, 1.00000000000000000000, 0.06249998750000159600, 0.03124999218750119200, 1.00000000000000000000, 0.00390624843750035600, 0.00097656201171888557, 1.00000000000000000000, 0.00024414047851567300, 0.00003051755523682562, }; *rows = 4; *cols = 3; *err = 9.46226527575433710000; return data; }
   if (style == DerivestStyle_Backward && method_order == 4 && romberg_terms == 3) { static double data[] = { 1.00000000000000000000, 1.00000000000000000000, 1.00000000000000000000, 1.00000000000000000000, 1.00000000000000000000, 0.06249998750000159600, 0.03124999218750119200, 0.01562499531250083300, 1.00000000000000000000, 0.00390624843750035600, 0.00097656201171888557, 0.00024414047851567300, 1.00000000000000000000, 0.00024414047851567300, 0.00003051755523682562, 0.00000381469383239910, 1.00000000000000000000, 0.00001525877685547397, 0.00000095367336273244, 0.00000005960457324986, }; *rows = 5; *cols = 4; *err = 9.54585552301028170000; return data; }
-  throw std::invalid_argument("unsupported parameters");
+  return NULL;
 }
 double* get_rinv(DerivestStyle style, int method_order, int romberg_terms, double* err, int *rows, int *cols) {
   if (style == DerivestStyle_Central && method_order == 2 && romberg_terms == 0) { static double data[] = { -0.70710678118654746000, }; *rows = 1; *cols = 1; *err = 8.98464353209375590000; return data; }
@@ -183,28 +180,10 @@ double* get_rinv(DerivestStyle style, int method_order, int romberg_terms, doubl
   if (style == DerivestStyle_Backward && method_order == 4 && romberg_terms == 1) { static double data[] = { -0.57735026918962584000, -0.44969124314685543000, 0.00000000000000000000, 1.26506549190849830000, }; *rows = 2; *cols = 2; *err = 9.29861164842509960000; return data; }
   if (style == DerivestStyle_Backward && method_order == 4 && romberg_terms == 2) { static double data[] = { -0.50000000000000000000, -0.31437715757917595000, -0.45358546285800316000, 0.00000000000000000000, 1.17893234570635650000, 40.65255637895116800000, -0.00000000000000000000, -0.00000000000000000000, -40.24939508705306700000, }; *rows = 3; *cols = 3; *err = 9.46226527575433710000; return data; }
   if (style == DerivestStyle_Backward && method_order == 4 && romberg_terms == 3) { static double data[] = { -0.44721359549995793000, -0.24211679654875012000, -0.31343210054417769000, -0.45558104137318373000, 0.00000000000000000000, 1.13492358130095240000, 37.75749146462025200000, 868.86758056256576000000, -0.00000000000000000000, -0.00000000000000000000, -37.49785146754895500000, -2582.76011166920990000000, 0.00000000000000000000, 0.00000000000000000000, 0.00000000000000000000, 1714.34967876515930000000, }; *rows = 4; *cols = 4; *err = 9.54585552301028170000; return data; }
-  throw std::invalid_argument("unsupported parameters");
+  return NULL;
 }
 
-void validate_params(int derivative_order, int method_order, DerivestStyle style, int romberg_terms) {
-  if ((derivative_order < 1) || (derivative_order > 4)) throw std::invalid_argument("derivative_order must be in 1,2,3,4");
-
-  switch (style) {
-  case DerivestStyle_Central: 
-    if (method_order != 2 && method_order != 4) throw std::invalid_argument("For style==central method_order must be 2 or 4");
-    break;       
-  case DerivestStyle_Forward:
-  case DerivestStyle_Backward:
-    if (method_order < 1 && method_order > 4) throw std::invalid_argument("For style==forward and style==backward method_order must be in 1,2,3,4");
-    break;
-  default: 
-    throw std::invalid_argument("unsupported parameters");
-  }
-
-  if ((romberg_terms < 0) || (romberg_terms > 3)) throw std::invalid_argument("romberg_terms must be in 0,1,2,3");
-  if (style == DerivestStyle_Central && method_order == 4 && derivative_order == 4 && romberg_terms == 3) throw std::invalid_argument("unsupported combination of params");
-}
-
+// The following code is auto-generated with make_c_code() from derivutils.m
 int derivest_sort_compare(const void * a, const void * b)
 {
   const double A = *(double*)a;
@@ -214,16 +193,41 @@ int derivest_sort_compare(const void * a, const void * b)
   return 0;
 }
 
-// recommended params are as follows:
-//   style = DerivestStyle_Central (allowed alternatives are Forward and Backward)
-//   method_order = 4 (allowed alternatives are 1,2,3,4 for Forward and Backward; 2,4 for Central)
-//   romberg_terms = 2 (allowed alternatives are 0,1,2,3; 0 means disable Romberg extrapolation)
-double derivest(double(*fun)(double), double x0, int derivative_order, int method_order, DerivestStyle style, int romberg_terms, double* err, double* finaldelta) {
+// DERIVEST calculates numeric derivative of a function.
+// Arguments (input)
+//   fun              - function to differentiate
+//   x0               - point at which to differentiate fun
+//   derivative_order - specifies the derivative order estimated. Must be a positive integer from the set[1, 2, 3, 4].
+//   method_order     - specifies the order of the basic method used for the estimation.
+//                      for central methods, methods_order must be 2 or 4; otherwise can be 1, 2, 3 or 4
+//   style            - specifies the style of the basic method used for the estimation. 'central', 'forward', or 'backwards' difference methods are used.
+//   romberg_terms    - Allows the user to specify the generalized Romberg extrapolation method used, or turn it off completely.
+//                      Must be a positive integer from the set[0, 1, 2, 3].
+//
+// Arguments (output)
+//   *der             - pointer to where store the result (derivative)
+//   *err             - pointer to where store error estimate
+//   *finaldelta      - pointer to where store the final overall stepsize chosen by cppDERIVEST
+//
+// Return value: true if succeeded, false otherwise.
+//
+// Remark. Recommended params are as follows:
+//   style = DerivestStyle_Central
+//   method_order = 4
+//   romberg_terms = 2
+bool derivest(double(*fun)(double), double x0, int derivative_order, int method_order, DerivestStyle style, int romberg_terms, double *der, double* err, double* finaldelta) {
   const double step_ratio = 2.0000001;  // DERIVESTcpp is hardcoded to this specific step_ratio in several places.
-  const double h = std::max(x0, 0.02);  // same as nominal_step
+  const double h = fmax(x0, 0.02);  // same as nominal_step
   const double max_step = 100;
-  
-  validate_params(derivative_order, method_order, style, romberg_terms);
+
+  // validate parameters
+  if ((derivative_order < 1) || (derivative_order > 4)) return false;
+  if (style != DerivestStyle_Central && style != DerivestStyle_Forward && style != DerivestStyle_Backward) return false;
+  if (style == DerivestStyle_Central && (method_order != 2 && method_order != 4)) return false;
+  if ((style == DerivestStyle_Central || style == DerivestStyle_Backward) && (method_order < 1 && method_order > 4)) return false;
+  if ((romberg_terms < 0) || (romberg_terms > 3)) return false;
+  if (style == DerivestStyle_Central && method_order == 4 && derivative_order == 4 && romberg_terms == 3) return false;
+  if (der == NULL && err == NULL && finaldelta == NULL) return false;
 
   static const int ndel = 26;
   double delta[ndel];
@@ -247,9 +251,9 @@ double derivest(double(*fun)(double), double x0, int derivative_order, int metho
     if (derivative_order == 1 || derivative_order == 3) { for (int i = 0; i < ndel; i++) f_del[i] = (f_plusdel[i] - f_minusdel[i]) / 2.0; } // odd transformation
     else { for (int i = 0; i < ndel; i++) f_del[i] = (f_plusdel[i] + f_minusdel[i]) / 2.0 - f_x0; }
   } else if (style == DerivestStyle_Forward) {
-    for (int i = 0; i < ndel; i++) f_del[i] = fun(x0 + h*delta[i] - f_x0);  // forward rule; drop off the constant only
+    for (int i = 0; i < ndel; i++) f_del[i] = fun(x0 + h*delta[i]) - f_x0;  // forward rule; drop off the constant only
   } else if (style == DerivestStyle_Backward) {
-    for (int i = 0; i < ndel; i++) f_del[i] = fun(x0 - h*delta[i] - f_x0);  // backward rule; drop off the constant only
+    for (int i = 0; i < ndel; i++) f_del[i] = fun(x0 - h*delta[i]) - f_x0;  // backward rule; drop off the constant only
   }
 
   // Apply the finite difference rule at each delta, scalingas appropriate for delta and the requested DerivativeOrder.
@@ -283,11 +287,12 @@ double derivest(double(*fun)(double), double x0, int derivative_order, int metho
 
   // do romberg extrapolation for each estimate (extrapolation to a zero step size)
   const int nexpon = rmat_rows - 2;
-  const int nrombcoefs = std::max(1, (ne - (nexpon + 2)));
+  const int nrombcoefs_tmp = (ne - (nexpon + 2));
+  const int nrombcoefs = (nrombcoefs_tmp > 1) ? nrombcoefs_tmp : 1;
   
   // rhs = vec2mat(der_init, nexpon + 2, max(1, ne - (nexpon + 2)));
   // rombcoefs = rinv * (qromb.'*rhs); 
-  assert((rinv_cols < 4) && (nrombcoefs < ndel));   // make sure we allocate enough memory for rombcoefs
+  assert((rinv_cols <= 4) && (nrombcoefs < ndel));   // make sure we allocate enough memory for rombcoefs
   double rombcoefs[ndel * 4] = { 0.0 };  // matrix of size (nrows=rinv_cols, ncols=nrombcoefs)
   for (int i = 0; i < rinv_rows; i++)
     for (int j = 0; j < nrombcoefs; j++)
@@ -330,20 +335,353 @@ double derivest(double(*fun)(double), double x0, int derivative_order, int metho
     if (der_romb[i] < min_der_romb || der_romb[i] > max_der_romb) continue;
     if (index == -1 || errest[i] < errest[index]) index = i;
   }
-  if (index==-1) throw std::invalid_argument("bad santa");
+  if (index == -1) return false;
+  
+  if (der != NULL) *der = der_romb[index];
+  if (err != NULL) *err = errest[index];
+  if (finaldelta != NULL) *finaldelta = h * delta[index];
+  return true;
+}
 
-  if (err != nullptr) *err = errest[index];
-  if (finaldelta != nullptr) *finaldelta = h * delta[index];
-  return der_romb[index];
+double poly(double x) {
+  return x + x*x + x*x*x + x*x*x*x + x*x*x*x*x;
+}
+
+void check(double cpp_der, double cpp_err, double mat_der, double mat_err, double true_der) {
+  int err_code = 0;
+  static int lines = 0;
+  static int wins = 0;
+  static int lose = 0;
+  bool cpp_wins = (fabs(cpp_der - true_der) <= fabs(mat_der - true_der));
+  if (cpp_wins) wins++; else lose++;
+  if (false) {
+    printf(cpp_wins ? "+" : "-");
+    if ((lines++) > 77) {
+      printf(" CPP:%i, MAT:%i\n", wins, lose);
+      wins = 0; lose = 0; lines = 0;
+    }
+  }
+  printf("F'cpp=%.6f F'mat=%.6f hatErrCpp=%.6e hatErrMat=%.6e F'true=%.6f err(F'cpp)=%.6e err(F'mat)=%.6e\n", 
+    cpp_der, mat_der, cpp_err, mat_err, true_der, cpp_der - true_der, mat_der - true_der);
 }
 
 int main() {
-  double err = 0.0, finaldelta = 0.0;
-  int derivative_order = 1;
-  int method_order = 4;
-  DerivestStyle style = DerivestStyle_Central;
-  int romberg_terms = 2;
-  double der = derivest(exp, 1, derivative_order, method_order, style, romberg_terms, &err, &finaldelta);
-  printf("%.20f %.20f %.20f\n", der, err, finaldelta);
+  double der=0.0, err = 0.0, finaldelta = 0.0;
+  derivest(exp, 1, 1, 2, DerivestStyle_Central, 0, &der, &err, &finaldelta);  check(der, err, 2.71828182910204320000, 0.00000000487257430573, 2.71828182845904550000);
+  derivest(exp, 1, 1, 2, DerivestStyle_Central, 1, &der, &err, &finaldelta);  check(der, err, 2.71828182845951940000, 0.00000000000076733299, 2.71828182845904550000);
+  derivest(exp, 1, 1, 2, DerivestStyle_Central, 2, &der, &err, &finaldelta);  check(der, err, 2.71828182845904420000, 0.00000000000006613091, 2.71828182845904550000);
+  derivest(exp, 1, 1, 2, DerivestStyle_Central, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182845905400000, 0.00000000000004389977, 2.71828182845904550000);
+  derivest(exp, 1, 2, 2, DerivestStyle_Central, 0, &der, &err, &finaldelta);  check(der, err, 2.71828181431609920000, 0.00000013431187142050, 2.71828182845904550000);
+  derivest(exp, 1, 2, 2, DerivestStyle_Central, 1, &der, &err, &finaldelta);  check(der, err, 2.71828182809071000000, 0.00000000307388773607, 2.71828182845904550000);
+  derivest(exp, 1, 2, 2, DerivestStyle_Central, 2, &der, &err, &finaldelta);  check(der, err, 2.71828182845728120000, 0.00000000003505374050, 2.71828182845904550000);
+  derivest(exp, 1, 2, 2, DerivestStyle_Central, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182845631530000, 0.00000000002667293904, 2.71828182845904550000);
+  derivest(exp, 1, 3, 2, DerivestStyle_Central, 0, &der, &err, &finaldelta);  check(der, err, 2.71828022764691780000, 0.00001012076873281049, 2.71828182845904550000);
+  derivest(exp, 1, 3, 2, DerivestStyle_Central, 1, &der, &err, &finaldelta);  check(der, err, 2.71828182574754160000, 0.00000003443939930317, 2.71828182845904550000);
+  derivest(exp, 1, 3, 2, DerivestStyle_Central, 2, &der, &err, &finaldelta);  check(der, err, 2.71828182839895400000, 0.00000000060923812458, 2.71828182845904550000);
+  derivest(exp, 1, 3, 2, DerivestStyle_Central, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182842871740000, 0.00000000016664192415, 2.71828182845904550000);
+  derivest(exp, 1, 4, 2, DerivestStyle_Central, 0, &der, &err, &finaldelta);  check(der, err, 2.72098383922515330000, 0.02060526519211821800, 2.71828182845904550000);
+  derivest(exp, 1, 4, 2, DerivestStyle_Central, 1, &der, &err, &finaldelta);  check(der, err, 2.71828186851933660000, 0.00000093456256656499, 2.71828182845904550000);
+  derivest(exp, 1, 4, 2, DerivestStyle_Central, 2, &der, &err, &finaldelta);  check(der, err, 2.71828465269775550000, 0.00002584370610098787, 2.71828182845904550000);
+  derivest(exp, 1, 4, 2, DerivestStyle_Central, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182839686820000, 0.00000001398275403113, 2.71828182845904550000);
+  derivest(exp, 1, 1, 4, DerivestStyle_Central, 0, &der, &err, &finaldelta);  check(der, err, 2.71828182845951800000, 0.00000000000098189264, 2.71828182845904550000);
+  derivest(exp, 1, 1, 4, DerivestStyle_Central, 1, &der, &err, &finaldelta);  check(der, err, 2.71828182845904330000, 0.00000000000008472847, 2.71828182845904550000);
+  derivest(exp, 1, 1, 4, DerivestStyle_Central, 2, &der, &err, &finaldelta);  check(der, err, 2.71828182845905440000, 0.00000000000005633990, 2.71828182845904550000);
+  derivest(exp, 1, 1, 4, DerivestStyle_Central, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182845905570000, 0.00000000000004173637, 2.71828182845904550000);
+  derivest(exp, 1, 2, 4, DerivestStyle_Central, 0, &der, &err, &finaldelta);  check(der, err, 2.71828182809070730000, 0.00000000390682818240, 2.71828182845904550000);
+  derivest(exp, 1, 2, 4, DerivestStyle_Central, 1, &der, &err, &finaldelta);  check(der, err, 2.71828182845728120000, 0.00000000004434481922, 2.71828182845904550000);
+  derivest(exp, 1, 2, 4, DerivestStyle_Central, 2, &der, &err, &finaldelta);  check(der, err, 2.71828182845631530000, 0.00000000003370326617, 2.71828182845904550000);
+  derivest(exp, 1, 2, 4, DerivestStyle_Central, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182845865520000, 0.00000000000622983443, 2.71828182845904550000);
+  derivest(exp, 1, 3, 4, DerivestStyle_Central, 0, &der, &err, &finaldelta);  check(der, err, 2.71828182577612590000, 0.00000004398146937944, 2.71828182845904550000);
+  derivest(exp, 1, 3, 4, DerivestStyle_Central, 1, &der, &err, &finaldelta);  check(der, err, 2.71828182840607370000, 0.00000000070313826878, 2.71828182845904550000);
+  derivest(exp, 1, 3, 4, DerivestStyle_Central, 2, &der, &err, &finaldelta);  check(der, err, 2.71828182842988000000, 0.00000000020706751526, 2.71828182845904550000);
+  derivest(exp, 1, 3, 4, DerivestStyle_Central, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182843923740000, 0.00000000031744847107, 2.71828182845904550000);
+  derivest(exp, 1, 4, 4, DerivestStyle_Central, 0, &der, &err, &finaldelta);  check(der, err, 2.71828186850925930000, 0.00000118774750294165, 2.71828182845904550000);
+  derivest(exp, 1, 4, 4, DerivestStyle_Central, 1, &der, &err, &finaldelta);  check(der, err, 2.71828274062198670000, 0.00000914679438096250, 2.71828182845904550000);
+  derivest(exp, 1, 4, 4, DerivestStyle_Central, 2, &der, &err, &finaldelta);  check(der, err, 2.71828182839617360000, 0.00000001766512542244, 2.71828182845904550000);
+  derivest(exp, 1, 4, 4, DerivestStyle_Central, 3, &der, &err, &finaldelta);  check(der, err, 2.71828275733578110000, 0.00000913123052702803, 2.71828182845904550000);
+  derivest(exp, 1, 1, 1, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 2.71833043570328000000, 0.00020587349224618427, 2.71828182845904550000);
+  derivest(exp, 1, 1, 1, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828182329373820000, 0.00000002567154252126, 2.71828182845904550000);
+  derivest(exp, 1, 1, 1, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828182845678730000, 0.00000000007663699969, 2.71828182845904550000);
+  derivest(exp, 1, 1, 1, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182843945540000, 0.00000000002096849719, 2.71828182845904550000);
+  derivest(exp, 1, 2, 1, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 2.71837943251424900000, 0.00041059933045463251, 2.71828182845904550000);
+  derivest(exp, 1, 2, 1, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828153053694880000, 0.00000135086696382272, 2.71828182845904550000);
+  derivest(exp, 1, 2, 1, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828183903684330000, 0.00000006149505009311, 2.71828182845904550000);
+  derivest(exp, 1, 2, 1, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182804416500000, 0.00000000198457088005, 2.71828182845904550000);
+  derivest(exp, 1, 3, 1, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 2.71966930755408680000, 0.00540937714607603920, 2.71828182845904550000);
+  derivest(exp, 1, 3, 1, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 2.71822612212756630000, 0.00027867115060656696, 2.71828182845904550000);
+  derivest(exp, 1, 3, 1, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828229817838980000, 0.00000238018572171834, 2.71828182845904550000);
+  derivest(exp, 1, 3, 1, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828007970599030000, 0.00000995314210921011, 2.71828182845904550000);
+  derivest(exp, 1, 4, 1, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 2.79426848017645120000, 0.32636911603230501000, 2.71828182845904550000);
+  derivest(exp, 1, 4, 1, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 2.71761366892057810000, 0.00334891821111264020, 2.71828182845904550000);
+  derivest(exp, 1, 4, 1, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 2.72308236800488150000, 0.03782376157060058500, 2.71828182845904550000);
+  derivest(exp, 1, 4, 1, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 2.71795808996065040000, 0.00188144700654547650, 2.71828182845904550000);
+  derivest(exp, 1, 1, 2, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 2.71828182715038480000, 0.00000000978943243017, 2.71828182845904550000);
+  derivest(exp, 1, 1, 2, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828182845678730000, 0.00000000010949566508, 2.71828182845904550000);
+  derivest(exp, 1, 1, 2, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828182843512240000, 0.00000000000967515059, 2.71828182845904550000);
+  derivest(exp, 1, 1, 2, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182845911660000, 0.00000000000105759387, 2.71828182845904550000);
+  derivest(exp, 1, 2, 2, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 2.71828217000001620000, 0.00000168367744655471, 2.71828182845904550000);
+  derivest(exp, 1, 2, 2, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828183051183240000, 0.00000000261799037509, 2.71828182845904550000);
+  derivest(exp, 1, 2, 2, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828182804520150000, 0.00000000273278001380, 2.71828182845904550000);
+  derivest(exp, 1, 2, 2, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182846500830000, 0.00000000029420937929, 2.71828182845904550000);
+  derivest(exp, 1, 3, 2, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 2.71822612229262230000, 0.00042567705324013112, 2.71828182845904550000);
+  derivest(exp, 1, 3, 2, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828229836218100000, 0.00000340125810515070, 2.71828182845904550000);
+  derivest(exp, 1, 3, 2, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828007972743050000, 0.00001377255687277511, 2.71828182845904550000);
+  derivest(exp, 1, 3, 2, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828184816228500000, 0.00000013133447202008, 2.71828182845904550000);
+  derivest(exp, 1, 4, 2, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 2.71800949671585060000, 0.00251325777084757030, 2.71828182845904550000);
+  derivest(exp, 1, 4, 2, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 2.71969016902184930000, 0.01120112184244186900, 2.71828182845904550000);
+  derivest(exp, 1, 4, 2, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 2.71826528999722460000, 0.00013993344020257019, 2.71828182845904550000);
+  derivest(exp, 1, 4, 2, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 2.72420384073332270000, 0.05624041266239784800, 2.71828182845904550000);
+  derivest(exp, 1, 1, 3, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 2.71828182845678510000, 0.00000000013917408883, 2.71828182845904550000);
+  derivest(exp, 1, 1, 3, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828182843512240000, 0.00000000001215471898, 2.71828182845904550000);
+  derivest(exp, 1, 1, 3, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828182845911660000, 0.00000000000132179540, 2.71828182845904550000);
+  derivest(exp, 1, 1, 3, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182845893320000, 0.00000000000027829290, 2.71828182845904550000);
+  derivest(exp, 1, 2, 3, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 2.71828183051012880000, 0.00000000335383625307, 2.71828182845904550000);
+  derivest(exp, 1, 2, 3, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828182804270390000, 0.00000000345532031382, 2.71828182845904550000);
+  derivest(exp, 1, 2, 3, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828182846447050000, 0.00000000037055011272, 2.71828182845904550000);
+  derivest(exp, 1, 2, 3, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182848642900000, 0.00000000007792632656, 2.71828182845904550000);
+  derivest(exp, 1, 3, 3, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 2.71828229868771220000, 0.00000431683859938511, 2.71828182845904550000);
+  derivest(exp, 1, 3, 3, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828172065578140000, 0.00000110739087677810, 2.71828182845904550000);
+  derivest(exp, 1, 3, 3, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828183005048320000, 0.00000002520627908108, 2.71828182845904550000);
+  derivest(exp, 1, 3, 3, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828178611778040000, 0.00000030781012643753, 2.71828182845904550000);
+  derivest(exp, 1, 4, 3, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 2.71969016978165580000, 0.01423636894608317300, 2.71828182845904550000);
+  derivest(exp, 1, 4, 3, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 2.71826529455358350000, 0.00017597350826990371, 2.71828182845904550000);
+  derivest(exp, 1, 4, 3, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 2.72422076890458920000, 0.07044484878932928700, 2.71828182845904550000);
+  derivest(exp, 1, 4, 3, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 2.71809971871679590000, 0.00183784654900805640, 2.71828182845904550000);
+  derivest(exp, 1, 1, 4, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 2.71828182843512160000, 0.00000000001375406026, 2.71828182845904550000);
+  derivest(exp, 1, 1, 4, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828182845911840000, 0.00000000000149106125, 2.71828182845904550000);
+  derivest(exp, 1, 1, 4, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828182845893450000, 0.00000000000031316144, 2.71828182845904550000);
+  derivest(exp, 1, 1, 4, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182845891100000, 0.00000000000013716977, 2.71828182845904550000);
+  derivest(exp, 1, 2, 4, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 2.71828182804301570000, 0.00000000391180503358, 2.71828182845904550000);
+  derivest(exp, 1, 2, 4, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828182846461090000, 0.00000000041481593189, 2.71828182845904550000);
+  derivest(exp, 1, 2, 4, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828182848646050000, 0.00000000009069714476, 2.71828182845904550000);
+  derivest(exp, 1, 2, 4, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182845259380000, 0.00000000029379190899, 2.71828182845904550000);
+  derivest(exp, 1, 3, 4, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 2.71828172055705910000, 0.00000125274739985151, 2.71828182845904550000);
+  derivest(exp, 1, 3, 4, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828182994761700000, 0.00000002803808701062, 2.71828182845904550000);
+  derivest(exp, 1, 3, 4, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828178607862810000, 0.00000034723015229470, 2.71828182845904550000);
+  derivest(exp, 1, 3, 4, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828184931429460000, 0.00000018924143538854, 2.71828182845904550000);
+  derivest(exp, 1, 4, 4, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 2.71827447079582110000, 0.00007144395721836164, 2.71828182845904550000);
+  derivest(exp, 1, 4, 4, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 2.71843526392034600000, 0.00175222235382081390, 2.71828182845904550000);
+  derivest(exp, 1, 4, 4, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 2.71827382613972720000, 0.00007074671499010571, 2.71828182845904550000);
+  derivest(exp, 1, 1, 1, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 2.71823322250080630000, 0.00020586374709475149, 2.71828182845904550000);
+  derivest(exp, 1, 1, 1, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828182331422410000, 0.00000002571157446973, 2.71828182845904550000);
+  derivest(exp, 1, 1, 1, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828182845839410000, 0.00000000003952616487, 2.71828182845904550000);
+  derivest(exp, 1, 1, 1, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182846059140000, 0.00000000000073024612, 2.71828182845904550000);
+  derivest(exp, 1, 2, 1, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 2.71818536798474990000, 0.00042025714694037485, 2.71828182845904550000);
+  derivest(exp, 1, 2, 1, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828191029565720000, 0.00000024497230044149, 2.71828182845904550000);
+  derivest(exp, 1, 2, 1, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828183103582430000, 0.00000000360323363653, 2.71828182845904550000);
+  derivest(exp, 1, 2, 1, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182762515260000, 0.00000000240347072978, 2.71828182845904550000);
+  derivest(exp, 1, 3, 1, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 2.71690604315224030000, 0.00553800393016253430, 2.71828182845904550000);
+  derivest(exp, 1, 3, 1, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828184704527320000, 0.00000843006073819960, 2.71828182845904550000);
+  derivest(exp, 1, 3, 1, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828127213506710000, 0.00000149793748093661, 2.71828182845904550000);
+  derivest(exp, 1, 3, 1, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828174541399430000, 0.00000058995377306125, 2.71828182845904550000);
+  derivest(exp, 1, 4, 1, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 2.70981764405670190000, 0.05058693172527270500, 2.71828182845904550000);
+  derivest(exp, 1, 4, 1, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 2.71808579464560520000, 0.00050076182793128859, 2.71828182845904550000);
+  derivest(exp, 1, 4, 1, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 2.71823346722331260000, 0.00033121112617083895, 2.71828182845904550000);
+  derivest(exp, 1, 4, 1, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 2.71822884998332940000, 0.00036299060127072168, 2.71828182845904550000);
+  derivest(exp, 1, 1, 2, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 2.71828182719380650000, 0.00000001001970208062, 2.71828182845904550000);
+  derivest(exp, 1, 1, 2, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828182846498080000, 0.00000000000936172880, 2.71828182845904550000);
+  derivest(exp, 1, 1, 2, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828182846059050000, 0.00000000000099845299, 2.71828182845904550000);
+  derivest(exp, 1, 1, 2, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182846091160000, 0.00000000000165133998, 2.71828182845904550000);
+  derivest(exp, 1, 2, 2, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 2.71828191027862510000, 0.00000037412856697484, 2.71828182845904550000);
+  derivest(exp, 1, 2, 2, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828183103252700000, 0.00000000512266107235, 2.71828182845904550000);
+  derivest(exp, 1, 2, 2, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828182762574320000, 0.00000000333066377512, 2.71828182845904550000);
+  derivest(exp, 1, 2, 2, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182828442260000, 0.00000000199466578091, 2.71828182845904550000);
+  derivest(exp, 1, 3, 2, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 2.71828184774119790000, 0.00001287054888745099, 2.71828182845904550000);
+  derivest(exp, 1, 3, 2, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828127229819930000, 0.00000213744870682812, 2.71828182845904550000);
+  derivest(exp, 1, 3, 2, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828174566480520000, 0.00000081865418812459, 2.71828182845904550000);
+  derivest(exp, 1, 3, 2, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828183690862750000, 0.00000010696997771373, 2.71828182845904550000);
+  derivest(exp, 1, 4, 2, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 2.71808574624631480000, 0.00076467953434361925, 2.71828182845904550000);
+  derivest(exp, 1, 4, 2, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 2.71826576916223630000, 0.00014992482895879710, 2.71828182845904550000);
+  derivest(exp, 1, 4, 2, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 2.71826971932239130000, 0.00009771393275244667, 2.71828182845904550000);
+  derivest(exp, 1, 4, 2, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 2.71823639448478490000, 0.00035351809433819631, 2.71828182845904550000);
+  derivest(exp, 1, 1, 3, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 2.71828182846497900000, 0.00000000001190043523, 2.71828182845904550000);
+  derivest(exp, 1, 1, 3, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828182846059100000, 0.00000000000126082644, 2.71828182845904550000);
+  derivest(exp, 1, 1, 3, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828182846091160000, 0.00000000000205492244, 2.71828182845904550000);
+  derivest(exp, 1, 1, 3, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182845902870000, 0.00000000000189698001, 2.71828182845904550000);
+  derivest(exp, 1, 2, 3, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 2.71828183103599620000, 0.00000000654120755497, 2.71828182845904550000);
+  derivest(exp, 1, 2, 3, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828182762556160000, 0.00000000418338888078, 2.71828182845904550000);
+  derivest(exp, 1, 2, 3, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828182828423160000, 0.00000000249738135386, 2.71828182845904550000);
+  derivest(exp, 1, 2, 3, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182849993680000, 0.00000000040947171744, 2.71828182845904550000);
+  derivest(exp, 1, 3, 3, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 2.71828127256954800000, 0.00000272343980295460, 2.71828182845904550000);
+  derivest(exp, 1, 3, 3, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828174552636840000, 0.00000102744324365757, 2.71828182845904550000);
+  derivest(exp, 1, 3, 3, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828183675967240000, 0.00000013181576912828, 2.71828182845904550000);
+  derivest(exp, 1, 3, 3, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828184118332490000, 0.00000009080113541439, 2.71828182845904550000);
+  derivest(exp, 1, 4, 3, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 2.71826574283537200000, 0.00019038751189969790, 2.71828182845904550000);
+  derivest(exp, 1, 4, 3, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828282701920680000, 0.00002448463739247149, 2.71828182845904550000);
+  derivest(exp, 1, 4, 3, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828016013910870000, 0.00002053844328335441, 2.71828182845904550000);
+  derivest(exp, 1, 4, 3, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 2.71826336206361100000, 0.00017990714239353233, 2.71828182845904550000);
+  derivest(exp, 1, 1, 4, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 2.71828182846059050000, 0.00000000000141920625, 2.71828182845904550000);
+  derivest(exp, 1, 1, 4, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828182846616780000, 0.00000000000061079031, 2.71828182845904550000);
+  derivest(exp, 1, 1, 4, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828182845902950000, 0.00000000000215525024, 2.71828182845904550000);
+  derivest(exp, 1, 1, 4, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182845916810000, 0.00000000000070747854, 2.71828182845904550000);
+  derivest(exp, 1, 2, 4, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 2.71828182762635780000, 0.00000000474930413447, 2.71828182845904550000);
+  derivest(exp, 1, 2, 4, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828182828508200000, 0.00000000280679262626, 2.71828182845904550000);
+  derivest(exp, 1, 2, 4, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828182849992220000, 0.00000000045712849851, 2.71828182845904550000);
+  derivest(exp, 1, 2, 4, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182851301570000, 0.00000000031518170911, 2.71828182845904550000);
+  derivest(exp, 1, 3, 4, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 2.71828174547396720000, 0.00000116290251165030, 2.71828182845904550000);
+  derivest(exp, 1, 3, 4, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828183670625200000, 0.00000014914673754532, 2.71828182845904550000);
+  derivest(exp, 1, 3, 4, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828184112944490000, 0.00000010272428006068, 2.71828182845904550000);
+  derivest(exp, 1, 3, 4, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 2.71828182575342050000, 0.00000008184181934329, 2.71828182845904550000);
+  derivest(exp, 1, 4, 4, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 2.71828286943393180000, 0.00002811852252097720, 2.71828182845904550000);
+  derivest(exp, 1, 4, 4, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 2.71828374628076830000, 0.00001947368767550344, 2.71828182845904550000);
+  derivest(exp, 1, 4, 4, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 2.71828157771911540000, 0.00000767468189150057, 2.71828182845904550000);
+  derivest(poly, 0, 1, 2, DerivestStyle_Central, 0, &der, &err, &finaldelta);  check(der, err, 1.00000000000056820000, 0.00000000000433358563, 1.00000000000000000000);
+  derivest(poly, 0, 1, 2, DerivestStyle_Central, 1, &der, &err, &finaldelta);  check(der, err, 1.00000000000000000000, 0.00000000000000000000, 1.00000000000000000000);
+  derivest(poly, 0, 1, 2, DerivestStyle_Central, 2, &der, &err, &finaldelta);  check(der, err, 1.00000000000000020000, 0.00000000000000000000, 1.00000000000000000000);
+  derivest(poly, 0, 1, 2, DerivestStyle_Central, 3, &der, &err, &finaldelta);  check(der, err, 0.99999999999999989000, 0.00000000000000253455, 1.00000000000000000000);
+  derivest(poly, 0, 2, 2, DerivestStyle_Central, 0, &der, &err, &finaldelta);  check(der, err, 2.00000000001005020000, 0.00000000017271281793, 2.00000000000000000000);
+  derivest(poly, 0, 2, 2, DerivestStyle_Central, 1, &der, &err, &finaldelta);  check(der, err, 2.00000000000000440000, 0.00000000000000479536, 2.00000000000000000000);
+  derivest(poly, 0, 2, 2, DerivestStyle_Central, 2, &der, &err, &finaldelta);  check(der, err, 2.00000000000000440000, 0.00000000000000501337, 2.00000000000000000000);
+  derivest(poly, 0, 2, 2, DerivestStyle_Central, 3, &der, &err, &finaldelta);  check(der, err, 2.00000000000000440000, 0.00000000000001681233, 2.00000000000000000000);
+  derivest(poly, 0, 3, 2, DerivestStyle_Central, 0, &der, &err, &finaldelta);  check(der, err, 6.00000002205805050000, 0.00000155509942400848, 6.00000000000000000000);
+  derivest(poly, 0, 3, 2, DerivestStyle_Central, 1, &der, &err, &finaldelta);  check(der, err, 6.00000000000000980000, 0.00000000000013185068, 6.00000000000000000000);
+  derivest(poly, 0, 3, 2, DerivestStyle_Central, 2, &der, &err, &finaldelta);  check(der, err, 5.99999999999997340000, 0.00000000000024845288, 6.00000000000000000000);
+  derivest(poly, 0, 3, 2, DerivestStyle_Central, 3, &der, &err, &finaldelta);  check(der, err, 6.00000000000002400000, 0.00000000000068190344, 6.00000000000000000000);
+  derivest(poly, 0, 4, 2, DerivestStyle_Central, 0, &der, &err, &finaldelta);  check(der, err, 24.00000000000000000000, 0.00000000000019416096, 24.00000000000000000000);
+  derivest(poly, 0, 4, 2, DerivestStyle_Central, 1, &der, &err, &finaldelta);  check(der, err, 24.00000000000006400000, 0.00000000000029467105, 24.00000000000000000000);
+  derivest(poly, 0, 4, 2, DerivestStyle_Central, 2, &der, &err, &finaldelta);  check(der, err, 23.99999999999995700000, 0.00000000000122965640, 24.00000000000000000000);
+  derivest(poly, 0, 4, 2, DerivestStyle_Central, 3, &der, &err, &finaldelta);  check(der, err, 23.99999999999630900000, 0.00000000000609805117, 24.00000000000000000000);
+  derivest(poly, 0, 1, 4, DerivestStyle_Central, 0, &der, &err, &finaldelta);  check(der, err, 0.99999999999999956000, 0.00000000000000315436, 1.00000000000000000000);
+  derivest(poly, 0, 1, 4, DerivestStyle_Central, 1, &der, &err, &finaldelta);  check(der, err, 0.99999999999999989000, 0.00000000000000103235, 1.00000000000000000000);
+  derivest(poly, 0, 1, 4, DerivestStyle_Central, 2, &der, &err, &finaldelta);  check(der, err, 0.99999999999999989000, 0.00000000000000104119, 1.00000000000000000000);
+  derivest(poly, 0, 1, 4, DerivestStyle_Central, 3, &der, &err, &finaldelta);  check(der, err, 0.99999999999999978000, 0.00000000000000361448, 1.00000000000000000000);
+  derivest(poly, 0, 2, 4, DerivestStyle_Central, 0, &der, &err, &finaldelta);  check(der, err, 1.99999999999999840000, 0.00000000000000719304, 2.00000000000000000000);
+  derivest(poly, 0, 2, 4, DerivestStyle_Central, 1, &der, &err, &finaldelta);  check(der, err, 1.99999999999999910000, 0.00000000000000583987, 2.00000000000000000000);
+  derivest(poly, 0, 2, 4, DerivestStyle_Central, 2, &der, &err, &finaldelta);  check(der, err, 2.00000000000000400000, 0.00000000000000416477, 2.00000000000000000000);
+  derivest(poly, 0, 2, 4, DerivestStyle_Central, 3, &der, &err, &finaldelta);  check(der, err, 2.00000000000000400000, 0.00000000000000978805, 2.00000000000000000000);
+  derivest(poly, 0, 3, 4, DerivestStyle_Central, 0, &der, &err, &finaldelta);  check(der, err, 6.00000000000022120000, 0.00000000000002523487, 6.00000000000000000000);
+  derivest(poly, 0, 3, 4, DerivestStyle_Central, 1, &der, &err, &finaldelta);  check(der, err, 6.00000000000249400000, 0.00000000002709864099, 6.00000000000000000000);
+  derivest(poly, 0, 3, 4, DerivestStyle_Central, 2, &der, &err, &finaldelta);  check(der, err, 6.00000000001066610000, 0.00000000006852334069, 6.00000000000000000000);
+  derivest(poly, 0, 3, 4, DerivestStyle_Central, 3, &der, &err, &finaldelta);  check(der, err, 6.00000000029444270000, 0.00000000142613251918, 6.00000000000000000000);
+  derivest(poly, 0, 4, 4, DerivestStyle_Central, 0, &der, &err, &finaldelta);  check(der, err, 24.00000000000001100000, 0.00000000000010093948, 24.00000000000000000000);
+  derivest(poly, 0, 4, 4, DerivestStyle_Central, 1, &der, &err, &finaldelta);  check(der, err, 23.99999999999982600000, 0.00000000000231742133, 24.00000000000000000000);
+  derivest(poly, 0, 4, 4, DerivestStyle_Central, 2, &der, &err, &finaldelta);  check(der, err, 23.99999999999803900000, 0.00000000001860368973, 24.00000000000000000000);
+  derivest(poly, 0, 4, 4, DerivestStyle_Central, 3, &der, &err, &finaldelta);  check(der, err, 23.99999999999455700000, 0.00000000002210466333, 24.00000000000000000000);
+  derivest(poly, 0, 1, 1, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 1.00000071525554230000, 0.00000302939658243334, 1.00000000000000000000);
+  derivest(poly, 0, 1, 1, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 0.99999999999545264000, 0.00000000002269597633, 1.00000000000000000000);
+  derivest(poly, 0, 1, 1, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 1.00000000000000040000, 0.00000000000000000000, 1.00000000000000000000);
+  derivest(poly, 0, 1, 1, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 1.00000000000000020000, 0.00000000000001048789, 1.00000000000000000000);
+  derivest(poly, 0, 2, 1, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 2.00000429185686590000, 0.00001817198088355098, 2.00000000000000000000);
+  derivest(poly, 0, 2, 1, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 1.99999999950590030000, 0.00000000195897412966, 2.00000000000000000000);
+  derivest(poly, 0, 2, 1, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 2.00000000001973890000, 0.00000000018541124429, 2.00000000000000000000);
+  derivest(poly, 0, 2, 1, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 1.99999999999999640000, 0.00000000000009726065, 2.00000000000000000000);
+  derivest(poly, 0, 3, 1, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 6.00014985720977820000, 0.00050802406566938826, 6.00000000000000000000);
+  derivest(poly, 0, 3, 1, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 5.99999613479397720000, 0.00002124941489195696, 6.00000000000000000000);
+  derivest(poly, 0, 3, 1, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 5.99999999999998490000, 0.00000000000013646545, 6.00000000000000000000);
+  derivest(poly, 0, 3, 1, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 5.99999999999952390000, 0.00000000000286294313, 6.00000000000000000000);
+  derivest(poly, 0, 4, 1, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 24.03206632973018800000, 0.15514770377647941000, 24.00000000000000000000);
+  derivest(poly, 0, 4, 1, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 23.99999999999928600000, 0.00000000000468211208, 24.00000000000000000000);
+  derivest(poly, 0, 4, 1, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 23.99999999999523600000, 0.00000000002178030626, 24.00000000000000000000);
+  derivest(poly, 0, 4, 1, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 23.99999999747423400000, 0.00000001504494906581, 24.00000000000000000000);
+  derivest(poly, 0, 1, 2, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 0.99999999999886258000, 0.00000000000866364414, 1.00000000000000000000);
+  derivest(poly, 0, 1, 2, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 1.00000000000000020000, 0.00000000000000339083, 1.00000000000000000000);
+  derivest(poly, 0, 1, 2, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 0.99999999999999967000, 0.00000000000000396189, 1.00000000000000000000);
+  derivest(poly, 0, 1, 2, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 0.99999999999999989000, 0.00000000000000605007, 1.00000000000000000000);
+  derivest(poly, 0, 2, 2, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 1.99999999953852630000, 0.00000000231860888584, 2.00000000000000000000);
+  derivest(poly, 0, 2, 2, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 2.00000000001871660000, 0.00000000038757753863, 2.00000000000000000000);
+  derivest(poly, 0, 2, 2, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 2.00000000000000440000, 0.00000000000002011525, 2.00000000000000000000);
+  derivest(poly, 0, 2, 2, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 1.99999999999982330000, 0.00000000000005769727, 2.00000000000000000000);
+  derivest(poly, 0, 3, 2, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 5.99999606545864150000, 0.00003201821613043800, 6.00000000000000000000);
+  derivest(poly, 0, 3, 2, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 5.99999999999994850000, 0.00000000000014257639, 6.00000000000000000000);
+  derivest(poly, 0, 3, 2, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 5.99999999999960920000, 0.00000000000291117688, 6.00000000000000000000);
+  derivest(poly, 0, 3, 2, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 5.99999999999542940000, 0.00000000003218428245, 6.00000000000000000000);
+  derivest(poly, 0, 4, 2, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 24.00000000000230600000, 0.00000000000354540491, 24.00000000000000000000);
+  derivest(poly, 0, 4, 2, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 24.00000000000127200000, 0.00000000000580130316, 24.00000000000000000000);
+  derivest(poly, 0, 4, 2, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 24.00000000021168100000, 0.00000000188561928942, 24.00000000000000000000);
+  derivest(poly, 0, 4, 2, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 23.99999999719759500000, 0.00000001056400426263, 24.00000000000000000000);
+  derivest(poly, 0, 1, 3, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 0.99999999999999922000, 0.00000000000000315436, 1.00000000000000000000);
+  derivest(poly, 0, 1, 3, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 0.99999999999999956000, 0.00000000000000215169, 1.00000000000000000000);
+  derivest(poly, 0, 1, 3, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 0.99999999999999989000, 0.00000000000000316393, 1.00000000000000000000);
+  derivest(poly, 0, 1, 3, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 0.99999999999999911000, 0.00000000000000456402, 1.00000000000000000000);
+  derivest(poly, 0, 2, 3, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 2.00000000001293410000, 0.00000000040097226066, 2.00000000000000000000);
+  derivest(poly, 0, 2, 3, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 1.99999999999999270000, 0.00000000000002886800, 2.00000000000000000000);
+  derivest(poly, 0, 2, 3, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 2.00000000000000090000, 0.00000000000006636713, 2.00000000000000000000);
+  derivest(poly, 0, 2, 3, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 2.00000000000008130000, 0.00000000000075084701, 2.00000000000000000000);
+  derivest(poly, 0, 3, 3, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 5.99999999999921660000, 0.00000000000424343676, 6.00000000000000000000);
+  derivest(poly, 0, 3, 3, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 5.99999999999919440000, 0.00000000000510652371, 6.00000000000000000000);
+  derivest(poly, 0, 3, 3, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 5.99999999999479080000, 0.00000000004108287565, 6.00000000000000000000);
+  derivest(poly, 0, 3, 3, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 6.00000000001701220000, 0.00000000027020503809, 6.00000000000000000000);
+  derivest(poly, 0, 4, 3, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 24.00000000019198900000, 0.00000000004674416711, 24.00000000000000000000);
+  derivest(poly, 0, 4, 3, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 24.00000000046113200000, 0.00000000296861448877, 24.00000000000000000000);
+  derivest(poly, 0, 4, 3, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 24.00000000449476500000, 0.00000007462464029726, 24.00000000000000000000);
+  derivest(poly, 0, 4, 3, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 24.00000014303921600000, 0.00000134298902586650, 24.00000000000000000000);
+  derivest(poly, 0, 1, 4, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 0.99999999999999922000, 0.00000000000000446094, 1.00000000000000000000);
+  derivest(poly, 0, 1, 4, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 1.00000000000000000000, 0.00000000000000178809, 1.00000000000000000000);
+  derivest(poly, 0, 1, 4, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 0.99999999999999944000, 0.00000000000000105052, 1.00000000000000000000);
+  derivest(poly, 0, 1, 4, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 0.99999999999999989000, 0.00000000000000617966, 1.00000000000000000000);
+  derivest(poly, 0, 2, 4, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 1.99999999999999580000, 0.00000000000019203802, 2.00000000000000000000);
+  derivest(poly, 0, 2, 4, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 1.99999999999999620000, 0.00000000000020458314, 2.00000000000000000000);
+  derivest(poly, 0, 2, 4, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 1.99999999999975400000, 0.00000000000077474733, 2.00000000000000000000);
+  derivest(poly, 0, 2, 4, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 1.99999999999975090000, 0.00000000000082041885, 2.00000000000000000000);
+  derivest(poly, 0, 3, 4, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 5.99999999998237590000, 0.00000000004768072918, 6.00000000000000000000);
+  derivest(poly, 0, 3, 4, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 5.99999999998259170000, 0.00000000005330977952, 6.00000000000000000000);
+  derivest(poly, 0, 3, 4, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 6.00000000000645970000, 0.00000000033124096680, 6.00000000000000000000);
+  derivest(poly, 0, 3, 4, DerivestStyle_Forward, 3, &der, &err, &finaldelta);  check(der, err, 5.99999999997576610000, 0.00000000068624398515, 6.00000000000000000000);
+  derivest(poly, 0, 4, 4, DerivestStyle_Forward, 0, &der, &err, &finaldelta);  check(der, err, 23.99999999981521600000, 0.00000000429054228333, 24.00000000000000000000);
+  derivest(poly, 0, 4, 4, DerivestStyle_Forward, 1, &der, &err, &finaldelta);  check(der, err, 23.99999999814194100000, 0.00000002454501421151, 24.00000000000000000000);
+  derivest(poly, 0, 4, 4, DerivestStyle_Forward, 2, &der, &err, &finaldelta);  check(der, err, 24.00000000010856700000, 0.00000004809029460638, 24.00000000000000000000);
+  derivest(poly, 0, 1, 1, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 0.99999964237267236000, 0.00000151469496485185, 1.00000000000000000000);
+  derivest(poly, 0, 1, 1, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 0.99999999999545264000, 0.00000000002269597666, 1.00000000000000000000);
+  derivest(poly, 0, 1, 1, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 0.99999999999999978000, 0.00000000000000322369, 1.00000000000000000000);
+  derivest(poly, 0, 1, 1, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 0.99999999999999956000, 0.00000000000001436113, 1.00000000000000000000);
+  derivest(poly, 0, 2, 1, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 1.99999570818846980000, 0.00001817047705207044, 2.00000000000000000000);
+  derivest(poly, 0, 2, 1, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 2.00000000013652280000, 0.00000000145160325996, 2.00000000000000000000);
+  derivest(poly, 0, 2, 1, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 1.99999999995838220000, 0.00000000002839099809, 2.00000000000000000000);
+  derivest(poly, 0, 2, 1, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 2.00000000000000360000, 0.00000000000011323153, 2.00000000000000000000);
+  derivest(poly, 0, 3, 1, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 5.99974771549474270000, 0.00086169081818200850, 6.00000000000000000000);
+  derivest(poly, 0, 3, 1, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 5.99999883762765230000, 0.00000174623401594542, 6.00000000000000000000);
+  derivest(poly, 0, 3, 1, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 5.99999999999987210000, 0.00000000000036289108, 6.00000000000000000000);
+  derivest(poly, 0, 3, 1, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 6.00000000000032240000, 0.00000000000310646860, 6.00000000000000000000);
+  derivest(poly, 0, 4, 1, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 23.98441353022266400000, 0.05642006126895014000, 24.00000000000000000000);
+  derivest(poly, 0, 4, 1, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 24.00000000000066400000, 0.00000000000484820006, 24.00000000000000000000);
+  derivest(poly, 0, 4, 1, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 24.00000000000664000000, 0.00000000003510133731, 24.00000000000000000000);
+  derivest(poly, 0, 4, 1, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 24.00000000821798100000, 0.00000005452024829123, 24.00000000000000000000);
+  derivest(poly, 0, 1, 2, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 0.99999999999886258000, 0.00000000000866364414, 1.00000000000000000000);
+  derivest(poly, 0, 1, 2, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 1.00000000000000020000, 0.00000000000000207645, 1.00000000000000000000);
+  derivest(poly, 0, 1, 2, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 0.99999999999999944000, 0.00000000000000349406, 1.00000000000000000000);
+  derivest(poly, 0, 1, 2, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 0.99999999999999978000, 0.00000000000000519335, 1.00000000000000000000);
+  derivest(poly, 0, 2, 2, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 2.00000000007350740000, 0.00000000059847764076, 2.00000000000000000000);
+  derivest(poly, 0, 2, 2, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 1.99999999995516520000, 0.00000000003656157364, 2.00000000000000000000);
+  derivest(poly, 0, 2, 2, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 1.99999999999805000000, 0.00000000000002145772, 2.00000000000000000000);
+  derivest(poly, 0, 2, 2, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 1.99999999999999270000, 0.00000000000004246404, 2.00000000000000000000);
+  derivest(poly, 0, 3, 2, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 5.99999855036796780000, 0.00000059575908370487, 6.00000000000000000000);
+  derivest(poly, 0, 3, 2, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 5.99999999999993340000, 0.00000000000052188003, 6.00000000000000000000);
+  derivest(poly, 0, 3, 2, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 6.00000000000007990000, 0.00000000000188099826, 6.00000000000000000000);
+  derivest(poly, 0, 3, 2, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 5.99999999999811260000, 0.00000000001863321253, 6.00000000000000000000);
+  derivest(poly, 0, 4, 2, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 23.99999999999682400000, 0.00000000001776354164, 24.00000000000000000000);
+  derivest(poly, 0, 4, 2, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 24.00000000000887100000, 0.00000000009702694257, 24.00000000000000000000);
+  derivest(poly, 0, 4, 2, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 24.00000000004172700000, 0.00000000018204024569, 24.00000000000000000000);
+  derivest(poly, 0, 4, 2, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 24.00000000682643600000, 0.00000006094827842205, 24.00000000000000000000);
+  derivest(poly, 0, 1, 3, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 0.99999999999999956000, 0.00000000000000359652, 1.00000000000000000000);
+  derivest(poly, 0, 1, 3, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 0.99999999999999944000, 0.00000000000000263528, 1.00000000000000000000);
+  derivest(poly, 0, 1, 3, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 0.99999999999999956000, 0.00000000000000223724, 1.00000000000000000000);
+  derivest(poly, 0, 1, 3, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 0.99999999999999967000, 0.00000000000000411395, 1.00000000000000000000);
+  derivest(poly, 0, 2, 3, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 1.99999999996829820000, 0.00000000007101746615, 2.00000000000000000000);
+  derivest(poly, 0, 2, 3, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 1.99999999999999160000, 0.00000000000006732429, 2.00000000000000000000);
+  derivest(poly, 0, 2, 3, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 2.00000000000000000000, 0.00000000000016597815, 2.00000000000000000000);
+  derivest(poly, 0, 2, 3, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 1.99999999999999760000, 0.00000000000019379622, 2.00000000000000000000);
+  derivest(poly, 0, 3, 3, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 6.00000000000035080000, 0.00000000000318816390, 6.00000000000000000000);
+  derivest(poly, 0, 3, 3, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 6.00000000000027440000, 0.00000000000273317623, 6.00000000000000000000);
+  derivest(poly, 0, 3, 3, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 6.00000000000022560000, 0.00000000000242093280, 6.00000000000000000000);
+  derivest(poly, 0, 3, 3, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 6.00000000000020160000, 0.00000000000224716648, 6.00000000000000000000);
+  derivest(poly, 0, 4, 3, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 23.99999473560235700000, 0.00007299185001796172, 24.00000000000000000000);
+  derivest(poly, 0, 4, 3, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 23.99994980166877300000, 0.00042157916611115244, 24.00000000000000000000);
+  derivest(poly, 0, 4, 3, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 23.99973967141690400000, 0.00109421184863562390, 24.00000000000000000000);
+  derivest(poly, 0, 4, 3, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 23.99973863916017100000, 0.00114071321510320180, 24.00000000000000000000);
+  derivest(poly, 0, 1, 4, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 0.99999999999999922000, 0.00000000000000315436, 1.00000000000000000000);
+  derivest(poly, 0, 1, 4, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 0.99999999999999978000, 0.00000000000000103235, 1.00000000000000000000);
+  derivest(poly, 0, 1, 4, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 0.99999999999999978000, 0.00000000000000105052, 1.00000000000000000000);
+  derivest(poly, 0, 1, 4, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 0.99999999999999989000, 0.00000000000000590073, 1.00000000000000000000);
+  derivest(poly, 0, 2, 4, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 2.00000000000022650000, 0.00000000000003764143, 2.00000000000000000000);
+  derivest(poly, 0, 2, 4, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 2.00000000000001690000, 0.00000000000018161204, 2.00000000000000000000);
+  derivest(poly, 0, 2, 4, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 2.00000000000001690000, 0.00000000000018508286, 2.00000000000000000000);
+  derivest(poly, 0, 2, 4, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 1.99999999999995160000, 0.00000000000055231492, 2.00000000000000000000);
+  derivest(poly, 0, 3, 4, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 5.99999999999767740000, 0.00000000000516313699, 6.00000000000000000000);
+  derivest(poly, 0, 3, 4, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 5.99999999999797670000, 0.00000000000904077450, 6.00000000000000000000);
+  derivest(poly, 0, 3, 4, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 5.99999999999497740000, 0.00000000002538818152, 6.00000000000000000000);
+  derivest(poly, 0, 3, 4, DerivestStyle_Backward, 3, &der, &err, &finaldelta);  check(der, err, 6.00000000002436180000, 0.00000000036065834537, 6.00000000000000000000);
+  derivest(poly, 0, 4, 4, DerivestStyle_Backward, 0, &der, &err, &finaldelta);  check(der, err, 24.00000000024323700000, 0.00000000166517992638, 24.00000000000000000000);
+  derivest(poly, 0, 4, 4, DerivestStyle_Backward, 1, &der, &err, &finaldelta);  check(der, err, 23.99999999948202900000, 0.00000000731445088592, 24.00000000000000000000);
+  derivest(poly, 0, 4, 4, DerivestStyle_Backward, 2, &der, &err, &finaldelta);  check(der, err, 24.00000000662672800000, 0.00000009023646612581, 24.00000000000000000000);
   return 0;
 }

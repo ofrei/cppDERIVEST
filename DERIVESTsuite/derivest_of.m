@@ -1,4 +1,4 @@
-function [der,errest,finaldelta] = derivest(fun,x0,varargin)
+function [der,errest,details] = derivest_of(fun,x0,varargin)
 % DERIVEST: estimate the n'th derivative of fun at x0, provide an error estimate
 % usage: [der,errest] = DERIVEST(fun,x0)  % first derivative
 % usage: [der,errest] = DERIVEST(fun,x0,prop1,val1,prop2,val2,...)
@@ -250,80 +250,7 @@ end
 % generate finite differencing rule in advance.
 % The rule is for a nominal unit step size, and will
 % be scaled later to reflect the local step size.
-fdarule = 1;
-switch par.Style
-  case 'central'
-    % for central rules, we will reduce the load by an
-    % even or odd transformation as appropriate.
-    if par.MethodOrder==2
-      switch par.DerivativeOrder
-        case 1
-          % the odd transformation did all the work
-          fdarule = 1;
-        case 2
-          % the even transformation did all the work
-          fdarule = 2;
-        case 3
-          % the odd transformation did most of the work, but
-          % we need to kill off the linear term
-          fdarule = [0 1]/fdamat(par.StepRatio,1,2);
-        case 4
-          % the even transformation did most of the work, but
-          % we need to kill off the quadratic term
-          fdarule = [0 1]/fdamat(par.StepRatio,2,2);
-      end
-    else
-      % a 4th order method. We've already ruled out the 1st
-      % order methods since these are central rules.
-      switch par.DerivativeOrder
-        case 1
-          % the odd transformation did most of the work, but
-          % we need to kill off the cubic term
-          fdarule = [1 0]/fdamat(par.StepRatio,1,2);
-        case 2
-          % the even transformation did most of the work, but
-          % we need to kill off the quartic term
-          fdarule = [1 0]/fdamat(par.StepRatio,2,2);
-        case 3
-          % the odd transformation did much of the work, but
-          % we need to kill off the linear & quintic terms
-          fdarule = [0 1 0]/fdamat(par.StepRatio,1,3);
-        case 4
-          % the even transformation did much of the work, but
-          % we need to kill off the quadratic and 6th order terms
-          fdarule = [0 1 0]/fdamat(par.StepRatio,2,3);
-      end
-    end
-  case {'forward' 'backward'}
-    % These two cases are identical, except at the very end,
-    % where a sign will be introduced.
-
-    % No odd/even trans, but we already dropped
-    % off the constant term
-    if par.MethodOrder==1
-      if par.DerivativeOrder==1
-        % an easy one
-        fdarule = 1;
-      else
-        % 2:4
-        v = zeros(1,par.DerivativeOrder);
-        v(par.DerivativeOrder) = 1;
-        fdarule = v/fdamat(par.StepRatio,0,par.DerivativeOrder);
-      end
-    else
-      % par.MethodOrder methods drop off the lower order terms,
-      % plus terms directly above DerivativeOrder
-      v = zeros(1,par.DerivativeOrder + par.MethodOrder - 1);
-      v(par.DerivativeOrder) = 1;
-      fdarule = v/fdamat(par.StepRatio,0,par.DerivativeOrder+par.MethodOrder-1);
-    end
-    
-    % correct sign for the 'backward' rule
-    if par.Style(1) == 'b'
-      fdarule = -fdarule;
-    end
-    
-end % switch on par.style (generating fdarule)
+fdarule = derivutils.get_fdarule(par.Style, par.MethodOrder, par.DerivativeOrder, par.StepRatio);
 nfda = length(fdarule);
 
 % will we need fun(x0)?
@@ -416,29 +343,29 @@ for i = 1:n
 
   % Form the initial derivative estimates from the chosen
   % finite difference method.
-  der_init = vec2mat(f_del,ne,nfda)*fdarule.';
-
+  use_DERIVESTsuite_numerics = 1;
+  if use_DERIVESTsuite_numerics
+      der_init = vec2mat(f_del,ne,nfda)*fdarule.';
+  else
+      der_init = zeros(ne, 1);
+      for ind1=1:ne
+          for ind2=1:nfda
+             der_init(ind1) = der_init(ind1) +  f_del(ind1+ind2-1) * fdarule(ind2);
+          end
+      end
+  end
+  
   % scale to reflect the local delta
   der_init = der_init(:)./(h*delta(1:ne)).^par.DerivativeOrder;
 
   % flip sign if style==backward and derivative of even order
   if ((par.Style(1)=='b') && ismember(par.DerivativeOrder,[2 4])), der_init = -der_init; end
-  
-  % Each approximation that results is an approximation
-  % of order par.DerivativeOrder to the desired derivative.
-  % Additional (higher order, even or odd) terms in the
-  % Taylor series also remain. Use a generalized (multi-term)
-  % Romberg extrapolation to improve these estimates.
-  switch par.Style
-    case 'central'
-      rombexpon = 2*(1:par.RombergTerms) + par.MethodOrder - 2;
-    otherwise
-      rombexpon = (1:par.RombergTerms) + par.MethodOrder - 1;
-  end
-  [der_romb,errors] = rombextrap(par.StepRatio,der_init,rombexpon);
+
+  [qromb, rmat, rinv, err] = derivutils.rombmat(par.StepRatio, par.Style(1)=='c', par.RombergTerms, par.MethodOrder);
+  [der_romb, errors_romb] = derivutils.rombextrap(der_init, qromb, rmat, rinv, err);
   
   % Choose which result to return
-  
+
   % first, trim off the 
   if isempty(par.FixedStep)
     % trim off the estimates at each end of the scale
@@ -456,83 +383,25 @@ for i = 1:n
     
     der_romb(trim) = [];
     tags(trim) = [];
-    errors = errors(tags);
+    trimerrors = errors_romb(tags);
     trimdelta = delta(tags);
     
-    [errest(i),ind] = min(errors);
+    [errest(i),ind] = min(trimerrors);
     
     finaldelta(i) = h*trimdelta(ind);
     der(i) = der_romb(ind);
   else
-    [errest(i),ind] = min(errors);
+    [errest(i),ind] = min(errors_romb);
     finaldelta(i) = h*delta(ind);
     der(i) = der_romb(ind);
   end
 end
 
+details.der_init = der_init;
+details.der_romb = der_romb;
+details.finaldelta = finaldelta;
+details.errors_romb = errors_romb;
 end % mainline end
-
-% ============================================
-% subfunction - romberg extrapolation
-% ============================================
-function [der_romb,errest] = rombextrap(StepRatio,der_init,rombexpon)
-% do romberg extrapolation for each estimate
-%
-%  StepRatio - Ratio decrease in step
-%  der_init - initial derivative estimates
-%  rombexpon - higher order terms to cancel using the romberg step
-%
-%  der_romb - derivative estimates returned
-%  errest - error estimates
-%  amp - noise amplification factor due to the romberg step
-
-srinv = 1/StepRatio;
-
-% do nothing if no romberg terms
-nexpon = length(rombexpon);
-rmat = ones(nexpon+2,nexpon+1);
-switch nexpon
-  case 0
-    % rmat is simple: ones(2,1)
-  case 1
-    % only one romberg term
-    rmat(2,2) = srinv^rombexpon;
-    rmat(3,2) = srinv^(2*rombexpon);
-  case 2
-    % two romberg terms
-    rmat(2,2:3) = srinv.^rombexpon;
-    rmat(3,2:3) = srinv.^(2*rombexpon);
-    rmat(4,2:3) = srinv.^(3*rombexpon);
-  case 3
-    % three romberg terms
-    rmat(2,2:4) = srinv.^rombexpon;
-    rmat(3,2:4) = srinv.^(2*rombexpon);
-    rmat(4,2:4) = srinv.^(3*rombexpon);
-    rmat(5,2:4) = srinv.^(4*rombexpon);
-end
-
-% qr factorization used for the extrapolation as well
-% as the uncertainty estimates
-[qromb,rromb] = qr(rmat,0);
-
-% the noise amplification is further amplified by the Romberg step.
-% amp = cond(rromb);
-
-% this does the extrapolation to a zero step size.
-ne = length(der_init);
-rhs = vec2mat(der_init,nexpon+2,max(1,ne - (nexpon+2)));
-rinv = rromb\eye(nexpon+1);
-%rombcoefs = rromb\(qromb.'*rhs); 
-rombcoefs = rinv*(qromb.'*rhs); 
-der_romb = rombcoefs(1,:).';
-
-% uncertainty estimate of derivative prediction
-s = sqrt(sum((rhs - rmat*rombcoefs).^2,1));
-cov1 = sum(rinv.^2,2); % 1 spare dof
-errest = s.'*(12.7062047361747*sqrt(cov1(1)));
-
-end % rombextrap
-
 
 % ============================================
 % subfunction - vec2mat
@@ -547,42 +416,6 @@ if n==1
 end
 
 end % vec2mat
-
-
-% ============================================
-% subfunction - fdamat
-% ============================================
-function mat = fdamat(sr,parity,nterms)
-% Compute matrix for fda derivation.
-% parity can be
-%   0 (one sided, all terms included but zeroth order)
-%   1 (only odd terms included)
-%   2 (only even terms included)
-% nterms - number of terms
-
-% sr is the ratio between successive steps
-srinv = 1./sr;
-
-switch parity
-  case 0
-    % single sided rule
-    [i,j] = ndgrid(1:nterms);
-    c = 1./factorial(1:nterms);
-    mat = c(j).*srinv.^((i-1).*j);
-  case 1
-    % odd order derivative
-    [i,j] = ndgrid(1:nterms);
-    c = 1./factorial(1:2:(2*nterms));
-    mat = c(j).*srinv.^((i-1).*(2*j-1));
-  case 2
-    % even order derivative
-    [i,j] = ndgrid(1:nterms);
-    c = 1./factorial(2:2:(2*nterms));
-    mat = c(j).*srinv.^((i-1).*(2*j));
-end
-
-end % fdamat
-
 
 
 % ============================================

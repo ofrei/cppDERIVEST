@@ -36,6 +36,6 @@ bool derivest(std::function<double(double)> fun, double x0, int derivative_order
 // estimate elements of the Hessian matrix (matrix of 2nd partials)
 // n gives the dimension
 // hess and err are output arrays, must be at least of size n*n
-// bool hessian(double(*fun)(double*, void*), double* x0, void* funarg, int n, double* hess, double* err);
+bool hessian(std::function<double(double*)> fun, double* x0, int n, double* hess, double* err);
 
 #endif

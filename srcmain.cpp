@@ -24,6 +24,20 @@ void check(double cpp_der, double cpp_err, double mat_der, double mat_err, doubl
 }
 
 int main() {
+  double x0vec[] = { 0, 0 };
+  double hess[4] = { 0 };
+  double hess_err[4] = { 0 };
+  auto f2 = [](double* x) {return cos(x[0] - x[1]); };
+  hessian(f2, x0vec, 2, hess, hess_err);
+
+  // Rosenbrock function, minimized at[1, 1]
+  // rosen = @(x) (1 - x(1)). ^ 2 + 105 * (x(2) - x(1). ^ 2). ^ 2;
+  auto rosen = [](double* x) { return pow(x[0] - 1, 2) + 105 * pow(x[1] - x[0] * x[0], 2); };
+  double x1vec[] = { 1, 1 };
+  hessian(rosen, x1vec, 2, hess, hess_err);
+
+  return 0;
+
   double der=0.0, err = 0.0, finaldelta = 1.0;
   auto exp = [](double x) {return std::exp(x); };
   auto poly = [](double x) {return x + x*x + x*x*x + x*x*x*x + x*x*x*x*x; };

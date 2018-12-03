@@ -1,8 +1,10 @@
+#include "derivest.h"
+
 #include <assert.h>
 #include <math.h>
 #include <stdlib.h>
 
-#include "derivest.h"
+#include <vector>
 
 double* get_fdarule(int derivative_order, int method_order, DerivestStyle style, int *n) {
   if (style == DerivestStyle_Central && method_order == 2 && derivative_order == 1) { static double data[] = { 1.00000000000000000000, }; *n = 1; return data; }
@@ -277,7 +279,7 @@ bool derivest(std::function<double(double)> fun, double x0, int derivative_order
   // der_romb = rombcoefs(1,:).';
   double der_romb[ndel] = { 0.0 };  // only first "max(1,ne - (nexpon+2))" elements will be used
   for (int i = 0; i < nrombcoefs; i++)
-    der_romb[i] = rombcoefs[0 * nrombcoefs + i];
+     der_romb[i] = rombcoefs[0 * nrombcoefs + i];
 
   // uncertainty estimate of derivative prediction
   // s = sqrt(sum((rhs - rmat*rombcoefs).^2,1));
@@ -315,4 +317,98 @@ bool derivest(std::function<double(double)> fun, double x0, int derivative_order
   if (err != NULL) *err = errest[index];
   if (finaldelta != NULL) *finaldelta = h * delta[index];
   return true;
+}
+
+
+bool hessian(std::function<double(double*)> fun, double* x0, int n, double* hess, double* err) {
+  const std::vector<double> x0vec(x0, x0+n);
+
+  // Let "x1" be a vector equal to vector "x0", but with "index" argument replaced by a new value "x". E.i.,
+  //    x1(index, x) := [x0[0], ..., x0[index-1), x, x0[index+1], x0[n-1]]
+  // Then fun1(index) generatest a new function of x, which evaluates to fun(x1), where x1 depends on x as defined above.
+  //   fun1(index)(x) = fun(x1(index, x))
+  auto fun1 = [&fun, x0vec](int index) {
+    return [index, &fun, x0vec](double x) {
+      std::vector<double> x1vec(x0vec);
+      x1vec[index] = x;
+      return fun(&x1vec[0]);            
+    };
+  };
+
+  // Similar to fun1, but replace two arguments
+  auto fun2 = [&fun, x0vec](int index1, int index2) {
+    return [index1, index2, &fun, x0vec](double x1, double x2) {
+      std::vector<double> x1vec(x0vec);
+      x1vec[index1] = x1;
+      x1vec[index2] = x2;
+      return fun(&x1vec[0]);
+    };
+  };
+
+  const int romberg_terms = 2;  // I think in the original DERIVESTsuite matlab code there was a typo: it says RombergTerms=3, but in fact it corresponds to RombergTerms=2 (at least when compared to derivest.m)
+  const DerivestStyle style = DerivestStyle_Central;
+  const int method_order = 2;
+
+  // get the diagonal elements of the hessian (2nd partial derivatives wrt each variable.)
+  bool ok = true;
+  for (int index = 0; index < n; index++)
+    ok &= derivest(fun1(index), x0[index], 2, 4, style, romberg_terms, (hess == NULL) ? NULL : &hess[index*(n + 1)], (err == NULL) ? NULL : &err[index*(n + 1)], NULL);
+  if (n < 2) return ok;  // the hessian matrix is 1x1. all done
+
+  std::vector<double> stepsize(n, 0.0);
+  for (int index = 0; index < n; index++)
+    ok &= derivest(fun1(index), x0[index], 1, method_order, style, romberg_terms, NULL, NULL, &stepsize[index]);
+
+  const double step_ratio = 2.0000001;  // DERIVESTcpp is hardcoded to this specific step_ratio in several places.
+  const double dfrac[romberg_terms + 2] = { 1, pow(step_ratio, -1), pow(step_ratio, -2), pow(step_ratio, -3) };
+
+  double romb_err;
+  int qromb_rows, qromb_cols, rmat_rows, rmat_cols, rinv_rows, rinv_cols;
+  double* qromb = get_qromb(style, method_order, romberg_terms, &romb_err, &qromb_rows, &qromb_cols);
+  double* rmat = get_rmat(style, method_order, romberg_terms, &romb_err, &rmat_rows, &rmat_cols);
+  double* rinv = get_rinv(style, method_order, romberg_terms, &romb_err, &rinv_rows, &rinv_cols);
+  if (qromb == NULL || rmat == NULL || rinv == NULL) return false;
+
+  // Get params.RombergTerms + 2 estimates of the upper triangle of the hessian matrix
+  for (int index1 = 1; index1 < n; index1++) {
+    for (int index2 = 0; index2 < index1; index2++) {
+      double dij[romberg_terms + 2] = { 0.0 };
+      auto fun2ij = fun2(index1, index2);
+      for (int k = 0; k < romberg_terms + 2; k++) {
+        dij[k] = fun2ij(x0[index1] + dfrac[k] * stepsize[index1], x0[index2] + dfrac[k] * stepsize[index2]) +
+                 fun2ij(x0[index1] - dfrac[k] * stepsize[index1], x0[index2] - dfrac[k] * stepsize[index2]) -
+                 fun2ij(x0[index1] + dfrac[k] * stepsize[index1], x0[index2] - dfrac[k] * stepsize[index2]) -
+                 fun2ij(x0[index1] - dfrac[k] * stepsize[index1], x0[index2] + dfrac[k] * stepsize[index2]);
+        dij[k] /= (4.0 * stepsize[index1] * stepsize[index2] * pow(dfrac[k], 2));
+      }
+
+      // rombcoefs = rinv * (qromb.'*der_init); 
+      assert(rinv_cols <= 4);         // make sure we allocate enough memory for rombcoefs
+      double rombcoefs[4] = { 0.0 };  // matrix of size (nrows=rinv_cols, ncols=nrombcoefs)
+      for (int i = 0; i < rinv_rows; i++)
+          for (int k = 0; k < rinv_cols; k++)
+            for (int q = 0; q < qromb_rows; q++)
+              rombcoefs[i] += rinv[i*rinv_cols + k] * qromb[q*qromb_cols + k] * dij[q];
+
+      // der_romb = rombcoefs(1,:)';
+      double der_romb = rombcoefs[0];
+
+      // uncertainty estimate of derivative prediction
+      // s = sqrt(sum((rhs - rmat*rombcoefs).^2,1));
+      // errest = s.'*err;
+      double errest = 0.0;
+      for (int i = 0; i < rmat_rows; i++) {
+        double rmat_rombcoefs = 0.0;
+        for (int k = 0; k < rmat_cols; k++)
+          rmat_rombcoefs += rmat[i*rmat_cols + k] * rombcoefs[k];
+        errest += pow(dij[i] - rmat_rombcoefs, 2);
+      }
+      errest = sqrt(errest) * romb_err;
+
+      if (hess != NULL) hess[index1 + n*index2] = hess[index2 + n*index1] = der_romb;
+      if (err != NULL) err[index1 + n*index2] = err[index2 + n*index1] = errest;
+    }
+  }
+
+  return ok;
 }

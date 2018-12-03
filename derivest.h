@@ -1,17 +1,13 @@
 #ifndef DERIVEST_H__
 #define DERIVEST_H__
 
+#include <functional>
+
 enum DerivestStyle {
   DerivestStyle_Central = 0,
   DerivestStyle_Forward = 1,
   DerivestStyle_Backward = 2,
 };
-
-// double* get_fdarule(int derivative_order, int method_order, DerivestStyle style, int *n);
-// double* get_qromb(DerivestStyle style, int method_order, int romberg_terms, double* err, int *rows, int *cols);
-// double* get_rmat(DerivestStyle style, int method_order, int romberg_terms, double* err, int *rows, int *cols);
-// double* get_rinv(DerivestStyle style, int method_order, int romberg_terms, double* err, int *rows, int *cols);
-// int derivest_sort_compare(const void * a, const void * b);
 
 // DERIVEST calculates numeric derivative of a function.
 // Arguments (input)
@@ -35,6 +31,11 @@ enum DerivestStyle {
 //   style = DerivestStyle_Central
 //   method_order = 4
 //   romberg_terms = 2
-bool derivest(double(*fun)(double), double x0, int derivative_order, int method_order, DerivestStyle style, int romberg_terms, double *der, double* err, double* finaldelta);
+bool derivest(std::function<double(double)> fun, double x0, int derivative_order, int method_order, DerivestStyle style, int romberg_terms, double *der, double* err, double* finaldelta);
+
+// estimate elements of the Hessian matrix (matrix of 2nd partials)
+// n gives the dimension
+// hess and err are output arrays, must be at least of size n*n
+// bool hessian(double(*fun)(double*, void*), double* x0, void* funarg, int n, double* hess, double* err);
 
 #endif

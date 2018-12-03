@@ -187,7 +187,7 @@ int derivest_sort_compare(const void * a, const void * b)
   return 0;
 }
 
-bool derivest(double(*fun)(double), double x0, int derivative_order, int method_order, DerivestStyle style, int romberg_terms, double *der, double* err, double* finaldelta) {
+bool derivest(std::function<double(double)> fun, double x0, int derivative_order, int method_order, DerivestStyle style, int romberg_terms, double *der, double* err, double* finaldelta) {
   const double step_ratio = 2.0000001;  // DERIVESTcpp is hardcoded to this specific step_ratio in several places.
   const double h = fmax(x0, 0.02);  // same as nominal_step
   const double max_step = 100;

@@ -42,3 +42,14 @@ f''(x)   = 2.00000000000000355, err=3.553e-15, hat(err)=6.035e-14
 f'''(x)  = 6.00000000000983036, err=9.830e-12, hat(err)=6.538e-11
 f''''(x) = 23.99999999999797495, err=-2.025e-12, hat(err)=1.920e-11
 ```
+
+# Help
+
+Take a look at comments in ``derivest.h``.
+Recommended params are 
+
+* style = DerivestStyle_Central
+* method_order = 4
+* romberg_terms = 2
+
+If you have further questions, please [open an issue](https://github.com/ofrei/cppDERIVEST/issues/new)

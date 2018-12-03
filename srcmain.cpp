@@ -28,7 +28,20 @@ void check(double cpp_der, double cpp_err, double mat_der, double mat_err, doubl
 }
 
 int main() {
-  double der=0.0, err = 0.0, finaldelta = 0.0;
+  double der=0.0, err = 0.0, finaldelta = 1.0;
+  printf("f(x) = exp(x); x0 = 1;\n");
+  derivest(exp, 1, 1, 4, DerivestStyle_Central, 2, &der, &err, NULL); printf("f'(x)    = %.17f, err=%.3e, hat(err)=%.3e\n", der, der - exp(1), err);
+  derivest(exp, 1, 2, 4, DerivestStyle_Central, 2, &der, &err, NULL); printf("f''(x)   = %.17f, err=%.3e, hat(err)=%.3e\n", der, der - exp(1), err);
+  derivest(exp, 1, 3, 4, DerivestStyle_Central, 2, &der, &err, NULL); printf("f'''(x)  = %.17f, err=%.3e, hat(err)=%.3e\n", der, der - exp(1), err);
+  derivest(exp, 1, 4, 4, DerivestStyle_Central, 2, &der, &err, NULL); printf("f''''(x) = %.17f, err=%.3e, hat(err)=%.3e\n", der, der - exp(1), err);
+  printf("\nf(x) = x + x*x + x*x*x + x*x*x*x + x*x*x*x*x; x0 = 0.0;\n");
+  derivest(poly, 0, 1, 4, DerivestStyle_Central, 2, &der, &err, NULL); printf("f'(x)    = %.17f, err=%.3e, hat(err)=%.3e\n", der, der - 1, err);
+  derivest(poly, 0, 2, 4, DerivestStyle_Central, 2, &der, &err, NULL); printf("f''(x)   = %.17f, err=%.3e, hat(err)=%.3e\n", der, der - 2, err);
+  derivest(poly, 0, 3, 4, DerivestStyle_Central, 2, &der, &err, NULL); printf("f'''(x)  = %.17f, err=%.3e, hat(err)=%.3e\n", der, der - 6, err);
+  derivest(poly, 0, 4, 4, DerivestStyle_Central, 2, &der, &err, NULL); printf("f''''(x) = %.17f, err=%.3e, hat(err)=%.3e\n", der, der - 24, err);
+  return 0;
+
+
   derivest(exp, 1, 1, 2, DerivestStyle_Central, 0, &der, &err, &finaldelta);  check(der, err, 2.71828182910204320000, 0.00000000487257430573, 2.71828182845904550000);
   derivest(exp, 1, 1, 2, DerivestStyle_Central, 1, &der, &err, &finaldelta);  check(der, err, 2.71828182845951940000, 0.00000000000076733299, 2.71828182845904550000);
   derivest(exp, 1, 1, 2, DerivestStyle_Central, 2, &der, &err, &finaldelta);  check(der, err, 2.71828182845904420000, 0.00000000000006613091, 2.71828182845904550000);

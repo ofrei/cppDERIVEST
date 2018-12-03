@@ -210,6 +210,7 @@ bool derivest(double(*fun)(double), double x0, int derivative_order, int method_
   // be scaled later to reflect the local step size.
   int nfda;
   double* fdarule = get_fdarule(derivative_order, method_order, style, &nfda);
+  if (fdarule == NULL) return false;
   
   // will we need fun(x0)?
   const double f_x0 = (derivative_order % 2 == 0 || style != DerivestStyle_Central) ? fun(x0) : 0.0;
@@ -256,6 +257,7 @@ bool derivest(double(*fun)(double), double x0, int derivative_order, int method_
   double* qromb = get_qromb(style, method_order, romberg_terms, &romb_err, &qromb_rows, &qromb_cols);
   double* rmat = get_rmat(style, method_order, romberg_terms, &romb_err, &rmat_rows, &rmat_cols);
   double* rinv = get_rinv(style, method_order, romberg_terms, &romb_err, &rinv_rows, &rinv_cols);
+  if (qromb == NULL || rmat == NULL || rinv == NULL) return false;
 
   // do romberg extrapolation for each estimate (extrapolation to a zero step size)
   const int nexpon = rmat_rows - 2;

@@ -355,6 +355,7 @@ bool hessian(std::function<double(double*)> fun, double* x0, int n, double* hess
     ok &= derivest(fun1(index), x0[index], 2, 4, style, romberg_terms, (hess == NULL) ? NULL : &hess[index*(n + 1)], (err == NULL) ? NULL : &err[index*(n + 1)], NULL);
   if (n < 2) return ok;  // the hessian matrix is 1x1. all done
 
+  // get the gradient vector. This is done only to decide on intelligent step sizes for the mixed partials
   std::vector<double> stepsize(n, 0.0);
   for (int index = 0; index < n; index++)
     ok &= derivest(fun1(index), x0[index], 1, method_order, style, romberg_terms, NULL, NULL, &stepsize[index]);
@@ -382,13 +383,17 @@ bool hessian(std::function<double(double*)> fun, double* x0, int n, double* hess
         dij[k] /= (4.0 * stepsize[index1] * stepsize[index2] * pow(dfrac[k], 2));
       }
 
+      // Romberg extrapolation step
+      // note: the following code somewhat duplicates 'rombextrap' piece of derivest()
+      // the difference is that below we don't have 'j' index --- i.e. it works as if nrombcoefs==1.
+
       // rombcoefs = rinv * (qromb.'*der_init); 
       assert(rinv_cols <= 4);         // make sure we allocate enough memory for rombcoefs
       double rombcoefs[4] = { 0.0 };  // matrix of size (nrows=rinv_cols, ncols=nrombcoefs)
       for (int i = 0; i < rinv_rows; i++)
-          for (int k = 0; k < rinv_cols; k++)
-            for (int q = 0; q < qromb_rows; q++)
-              rombcoefs[i] += rinv[i*rinv_cols + k] * qromb[q*qromb_cols + k] * dij[q];
+        for (int k = 0; k < rinv_cols; k++)
+          for (int q = 0; q < qromb_rows; q++)
+            rombcoefs[i] += rinv[i*rinv_cols + k] * qromb[q*qromb_cols + k] * dij[q];
 
       // der_romb = rombcoefs(1,:)';
       double der_romb = rombcoefs[0];

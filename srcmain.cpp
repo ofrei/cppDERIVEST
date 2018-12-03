@@ -24,19 +24,8 @@ void check(double cpp_der, double cpp_err, double mat_der, double mat_err, doubl
 }
 
 int main() {
-  double x0vec[] = { 0, 0 };
-  double hess[4] = { 0 };
-  double hess_err[4] = { 0 };
-  auto f2 = [](double* x) {return cos(x[0] - x[1]); };
-  hessian(f2, x0vec, 2, hess, hess_err);
 
-  // Rosenbrock function, minimized at[1, 1]
-  // rosen = @(x) (1 - x(1)). ^ 2 + 105 * (x(2) - x(1). ^ 2). ^ 2;
-  auto rosen = [](double* x) { return pow(x[0] - 1, 2) + 105 * pow(x[1] - x[0] * x[0], 2); };
-  double x1vec[] = { 1, 1 };
-  hessian(rosen, x1vec, 2, hess, hess_err);
 
-  return 0;
 
   double der=0.0, err = 0.0, finaldelta = 1.0;
   auto exp = [](double x) {return std::exp(x); };
@@ -51,7 +40,16 @@ int main() {
   derivest(poly, 0, 2, 4, DerivestStyle_Central, 2, &der, &err, NULL); printf("f''(x)   = %.17f, err=%.3e, hat(err)=%.3e\n", der, der - 2, err);
   derivest(poly, 0, 3, 4, DerivestStyle_Central, 2, &der, &err, NULL); printf("f'''(x)  = %.17f, err=%.3e, hat(err)=%.3e\n", der, der - 6, err);
   derivest(poly, 0, 4, 4, DerivestStyle_Central, 2, &der, &err, NULL); printf("f''''(x) = %.17f, err=%.3e, hat(err)=%.3e\n", der, der - 24, err);
-  
+
+  // Rosenbrock function, minimized at[1, 1]
+  auto rosen = [](double* x) { return pow(x[0] - 1, 2) + 105 * pow(x[1] - x[0] * x[0], 2); };
+  double x1vec[] = { 1, 1 };
+  double hess[4], hess_err[4];
+  hessian(rosen, x1vec, 2, hess, hess_err);
+  printf("\nrosen(x,y) = (1-x)^2 + 105 * (y - x^2)^2\n");
+  printf("hess(rosen)     = [%.8f %.8f; %.8f %.8f]\n", hess[0], hess[1], hess[2], hess[3]);
+  printf("hess_err(rosen) = [%.7e %.7e; %.7e %.7e]\n", hess_err[0], hess_err[1], hess_err[2], hess_err[3]);
+
   return 0;
 
   derivest(exp, 1, 1, 2, DerivestStyle_Central, 0, &der, &err, &finaldelta);  check(der, err, 2.71828182910204320000, 0.00000000487257430573, 2.71828182845904550000);
